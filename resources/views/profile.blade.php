@@ -374,7 +374,7 @@
       <div>
         <div class="reveal mb-4 flex items-center gap-3">
           <div class="w-8 h-px bg-[#e63946]"></div>
-          <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">Portfolio 2024</span>
+          <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">2026</span>
         </div>
 
         <div class="reveal reveal-delay-1 mb-2">
