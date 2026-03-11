@@ -212,21 +212,127 @@
 
     /* Active section nav */
     .snap-sec.active-sec .nav-indicator { opacity: 1; }
+
+    /* ── Top navbar ── */
+    #top-navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 60;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(8,8,16,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(220,38,38,0.12);
+      transition: background .3s, border-color .3s;
+    }
+    #top-navbar.scrolled {
+      background: rgba(8,8,16,0.95);
+      border-bottom-color: rgba(220,38,38,0.25);
+    }
+    .nav-link {
+      position: relative;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(232,224,216,0.5);
+      transition: color .25s;
+      padding: 4px 0;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 1px;
+      background: var(--red);
+      transition: width .3s ease;
+    }
+    .nav-link:hover { color: #e8e0d8; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active-nav { color: var(--red); }
+    .nav-link.active-nav::after { width: 100%; }
+
+    /* hamburger */
+    #nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    #nav-toggle span { display: block; width: 22px; height: 1.5px; background: #e8e0d8; transition: all .3s; }
+    #nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    #nav-toggle.open span:nth-child(2) { opacity: 0; }
+    #nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      z-index: 59;
+      background: rgba(8,8,16,0.97);
+      border-bottom: 1px solid rgba(220,38,38,0.2);
+      padding: 1.5rem 2rem;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    #mobile-menu.open { display: flex; }
+
+    @media (max-width: 640px) {
+      #nav-links { display: none; }
+      #nav-toggle { display: flex; }
+    }
   </style>
 </head>
 
 <body class="bg-[#080810] text-[#e8e0d8] font-mono overflow-hidden" style="font-family:'DM Mono',monospace">
 
+<!-- ── Top Navbar ── -->
+<header id="top-navbar">
+  <!-- Logo -->
+  <a href="#home" class="flex items-center gap-2 group">
+    <span class="font-display text-2xl leading-none" style="color:var(--red)">PORTOFOLIO</span><span class="font-display text-2xl leading-none text-white/70">.</span>
+    <span class="text-[10px] uppercase text-white/30 group-hover:text-white/50 transition-colors" style="letter-spacing:0.2em">Dev</span>
+  </a>
+
+  <!-- Desktop nav links -->
+  <nav id="nav-links" class="flex items-center gap-8">
+    <a href="#home"    class="nav-link active-nav" data-nav="home">Home</a>
+    <a href="#about"   class="nav-link" data-nav="about">About</a>
+    <a href="#project" class="nav-link" data-nav="project">Projects</a>
+    <a href="#contact" class="nav-link" data-nav="contact">Contact</a>
+  </nav>
+
+  <!-- CTA -->
+  <a href="{{ $profile['resume_url'] }}"
+    class="hidden sm:inline-flex items-center gap-2 text-[11px] border px-4 py-2 rounded-full transition-all duration-200 hover:bg-[rgba(220,38,38,0.12)]" 
+    style="color:var(--red);border-color:rgba(220,38,38,0.4);letter-spacing:0.1em">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Resume
+  </a>
+
+  <!-- Hamburger -->
+  <button id="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile menu -->
+<div id="mobile-menu">
+  <a href="#home"    class="nav-link text-sm" data-nav-m="home">Home</a>
+  <a href="#about"   class="nav-link text-sm" data-nav-m="about">About</a>
+  <a href="#project" class="nav-link text-sm" data-nav-m="project">Projects</a>
+  <a href="#contact" class="nav-link text-sm" data-nav-m="contact">Contact</a>
+  <a href="{{ $profile['resume_url'] }}" class="nav-link text-sm" style="color:var(--red)">Resume ↗</a>
+</div>
+
 <!-- Cursor -->
 <div id="cursor-glow"></div>
 
 <!-- ── Ambient blobs (fixed, behind everything) ── -->
-<div class="fixed w-[600px] h-[600px] rounded-full pointer-events-none blur-[120px] animate-drift"
-     style="background:radial-gradient(circle,rgba(160,20,30,0.22),transparent 70%);top:-150px;left:-150px;z-index:0"></div>
-<div class="fixed w-[500px] h-[500px] rounded-full pointer-events-none blur-[120px] animate-drift-rev"
-     style="background:radial-gradient(circle,rgba(220,38,38,0.15),transparent 70%);bottom:-100px;right:-100px;z-index:0"></div>
-<div class="fixed w-[300px] h-[300px] rounded-full pointer-events-none blur-[80px] animate-drift"
-     style="background:radial-gradient(circle,rgba(80,10,20,0.3),transparent 70%);top:40%;left:50%;z-index:0;animation-delay:-8s"></div>
+<div class="fixed rounded-full pointer-events-none blur-[120px] animate-drift"
+  style="width:600px;height:600px;background:radial-gradient(circle,rgba(160,20,30,0.22),transparent 70%);top:-150px;left:-150px;z-index:0"></div>
+<div class="fixed rounded-full pointer-events-none blur-[120px] animate-drift-rev"
+  style="width:500px;height:500px;background:radial-gradient(circle,rgba(220,38,38,0.15),transparent 70%);bottom:-100px;right:-100px;z-index:0"></div>
+<div class="fixed rounded-full pointer-events-none blur-[80px] animate-drift"
+  style="width:300px;height:300px;background:radial-gradient(circle,rgba(80,10,20,0.3),transparent 70%);top:40%;left:50%;z-index:0;animation-delay:-8s"></div>
 
 <!-- ── Side nav dots ── -->
 <nav class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
@@ -240,13 +346,13 @@
 <div class="fixed left-6 bottom-8 z-50 flex items-center gap-3">
   <span id="sec-num" class="font-display text-5xl text-white/10 leading-none select-none">01</span>
   <div class="w-px h-8 bg-white/10"></div>
-  <span id="sec-name" class="text-[11px] tracking-[.2em] uppercase text-[#7a7070]">Home</span>
+  <span id="sec-name" class="text-[11px] uppercase text-[#7a7070]" style="letter-spacing:0.2em">Home</span>
 </div>
 
 <!-- ── Scroll hint ── -->
 <div class="fixed right-6 bottom-8 z-50 flex flex-col items-center gap-1 opacity-40">
   <div class="w-px h-10 bg-white/30"></div>
-  <span class="text-[10px] tracking-[.15em] uppercase text-white/40" style="writing-mode:vertical-rl">scroll</span>
+  <span class="text-[10px] uppercase text-white/40" style="writing-mode:vertical-rl;letter-spacing:0.15em">scroll</span>
 </div>
 
 <!-- ════════════════════════════════════════════════ -->
@@ -259,8 +365,8 @@
     <div class="absolute inset-0 pointer-events-none" style="background-image:linear-gradient(rgba(220,38,38,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(220,38,38,0.04) 1px,transparent 1px);background-size:80px 80px"></div>
 
     <!-- Scan line animation -->
-    <div class="absolute left-0 right-0 h-[2px] animate-scan pointer-events-none"
-         style="background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),transparent);z-index:1"></div>
+    <div class="absolute left-0 right-0 h-0.5 animate-scan pointer-events-none"
+        style="background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),transparent);z-index:1"></div>
 
     <div class="relative z-10 max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
 
@@ -268,32 +374,31 @@
       <div>
         <div class="reveal mb-4 flex items-center gap-3">
           <div class="w-8 h-px bg-[#e63946]"></div>
-          <span class="text-[11px] tracking-[.3em] uppercase text-[#e63946]">Portfolio 2024</span>
+          <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">Portfolio 2024</span>
         </div>
 
         <div class="reveal reveal-delay-1 mb-2">
-          <span class="font-mono text-sm text-[#7a7070]">Muhammad Labiq Jazli</span>
+          <span class="font-mono text-sm text-[#7a7070]">{{ $profile['name'] }}</span>
         </div>
 
         <h1 class="reveal reveal-delay-2 font-display leading-none mb-6"
             style="font-size:clamp(4rem,10vw,8rem)">
-          <span class="glitch-wrap grad-text" data-text="WEB">WEB</span><br>
-          <span class="text-white/90">DEVELOPER</span>
+          <span class="glitch-wrap grad-text" data-text="{{ $profile['title_main'] }}">{{ $profile['title_main'] }}</span><br>
+          <span class="text-white/90">{{ strtoupper($profile['title_sub']) }}</span>
         </h1>
 
         <p class="reveal reveal-delay-3 text-[13px] text-[#7a7070] max-w-md leading-relaxed mb-8">
-          Front-end developer passionate about building beautiful
-          and functional web apps using React, Laravel &amp; modern technologies.
+          {{ $profile['headline'] }}
         </p>
 
         <div class="reveal reveal-delay-4 flex items-center gap-4">
-          <a href="#project"
-             class="inline-flex items-center gap-2 bg-[#e63946] hover:bg-[#ff4855] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 animate-pulse-glow">
+          <a href="{{ $profile['resume_url'] }}"
+            class="inline-flex items-center gap-2 bg-[#e63946] hover:bg-[#ff4855] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 animate-pulse-glow">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             My Resume
           </a>
-          <a href="#about"
-             class="inline-flex items-center gap-2 text-sm text-[#e8c8ca] border border-[rgba(220,38,38,0.3)] px-6 py-3 rounded-full hover:bg-[rgba(220,38,38,0.1)] hover:border-[rgba(220,38,38,0.6)] transition-all duration-200 hover:-translate-y-0.5">
+          <a href="{{ $profile['about_url'] }}"
+            class="inline-flex items-center gap-2 text-sm text-[#e8c8ca] border border-[rgba(220,38,38,0.3)] px-6 py-3 rounded-full hover:bg-[rgba(220,38,38,0.1)] hover:border-[rgba(220,38,38,0.6)] transition-all duration-200 hover:-translate-y-0.5">
             About Me
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -301,18 +406,16 @@
 
         <!-- Stats row -->
         <div class="reveal reveal-delay-5 flex gap-8 mt-10 pt-8 border-t border-white/5">
-          <div>
-            <p class="font-display text-3xl text-white" data-count="12">0</p>
-            <p class="text-[11px] text-[#7a7070] mt-1">Projects</p>
-          </div>
-          <div>
-            <p class="font-display text-3xl text-white" data-count="5">0</p>
-            <p class="text-[11px] text-[#7a7070] mt-1">APIs shipped</p>
-          </div>
-          <div>
-            <p class="font-display text-3xl text-[#e63946]">∞</p>
-            <p class="text-[11px] text-[#7a7070] mt-1">Curiosity</p>
-          </div>
+          @foreach($stats as $stat)
+            <div>
+              @if(is_numeric($stat['value']))
+                <p class="font-display text-3xl text-white" data-count="{{ $stat['value'] }}">0</p>
+              @else
+                <p class="font-display text-3xl text-[#e63946]">{{ $stat['value'] }}</p>
+              @endif
+              <p class="text-[11px] text-[#7a7070] mt-1">{{ $stat['label'] }}</p>
+            </div>
+          @endforeach
         </div>
       </div>
 
@@ -320,17 +423,17 @@
       <div class="reveal reveal-delay-2 flex justify-center md:justify-end">
         <div class="relative">
           <!-- Rotating ring -->
-          <div class="absolute inset-[-20px] rounded-full border border-dashed border-[rgba(220,38,38,0.2)] animate-rotate-slow pointer-events-none"></div>
-          <div class="absolute inset-[-40px] rounded-full border border-dashed border-[rgba(220,38,38,0.1)] animate-rotate-slow pointer-events-none" style="animation-direction:reverse;animation-duration:30s"></div>
+          <div class="absolute rounded-full border border-dashed border-[rgba(220,38,38,0.2)] animate-rotate-slow pointer-events-none" style="top:-20px;right:-20px;bottom:-20px;left:-20px"></div>
+          <div class="absolute rounded-full border border-dashed border-[rgba(220,38,38,0.1)] animate-rotate-slow pointer-events-none" style="top:-40px;right:-40px;bottom:-40px;left:-40px;animation-direction:reverse;animation-duration:30s"></div>
 
           <!-- Card -->
           <div class="relative w-64 h-80 rounded-2xl overflow-hidden corner-tl corner-br"
-               style="border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(220,38,38,0.2)">
+              style="border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(220,38,38,0.2)">
             <img src="https://picsum.photos/seed/labiq/400/500" class="w-full h-full object-cover" alt="profile">
             <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(8,8,16,0.9) 0%,transparent 50%)"></div>
             <div class="absolute bottom-4 left-4">
               <p class="font-display text-xl text-white leading-none">LABIQ</p>
-              <p class="text-[10px] text-[#e63946] tracking-[.2em] mt-1">FULLSTACK DEV</p>
+              <p class="text-[10px] text-[#e63946] mt-1" style="letter-spacing:0.2em">FULLSTACK DEV</p>
             </div>
             <!-- Online indicator -->
             <div class="absolute top-4 right-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
@@ -349,26 +452,12 @@
 
     <!-- Ticker -->
     <div class="absolute bottom-0 left-0 right-0 h-10 flex items-center overflow-hidden border-t border-white/5" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)">
-      <div class="ticker-text animate-marquee flex gap-16 text-[11px] tracking-[.15em] uppercase text-[#7a7070]">
-        <span>React</span><span class="text-[#e63946]">✦</span>
-        <span>Laravel</span><span class="text-[#e63946]">✦</span>
-        <span>Golang</span><span class="text-[#e63946]">✦</span>
-        <span>TypeScript</span><span class="text-[#e63946]">✦</span>
-        <span>Tailwind CSS</span><span class="text-[#e63946]">✦</span>
-        <span>MySQL</span><span class="text-[#e63946]">✦</span>
-        <span>PostgreSQL</span><span class="text-[#e63946]">✦</span>
-        <span>REST API</span><span class="text-[#e63946]">✦</span>
-        <span>JWT Auth</span><span class="text-[#e63946]">✦</span>
-        <!-- duplicate for seamless loop -->
-        <span>React</span><span class="text-[#e63946]">✦</span>
-        <span>Laravel</span><span class="text-[#e63946]">✦</span>
-        <span>Golang</span><span class="text-[#e63946]">✦</span>
-        <span>TypeScript</span><span class="text-[#e63946]">✦</span>
-        <span>Tailwind CSS</span><span class="text-[#e63946]">✦</span>
-        <span>MySQL</span><span class="text-[#e63946]">✦</span>
-        <span>PostgreSQL</span><span class="text-[#e63946]">✦</span>
-        <span>REST API</span><span class="text-[#e63946]">✦</span>
-        <span>JWT Auth</span><span class="text-[#e63946]">✦</span>
+      <div class="ticker-text animate-marquee flex gap-16 text-[11px] uppercase text-[#7a7070]" style="letter-spacing:0.15em">
+        @for($i = 0; $i < 2; $i++)
+          @foreach($ticker as $item)
+            <span>{{ $item }}</span><span class="text-[#e63946]">✦</span>
+          @endforeach
+        @endfor
       </div>
     </div>
   </section>
@@ -388,17 +477,17 @@
           </div>
 
           <!-- Decorative stats box -->
-          <div class="absolute -bottom-6 -right-6 bg-[#080810] border border-[rgba(220,38,38,0.3)] rounded-xl p-4 min-w-[140px]"
-               style="box-shadow:0 8px 32px rgba(220,38,38,0.15)">
-            <p class="font-display text-3xl text-[#e63946]">3rd</p>
+          <div class="absolute -bottom-6 -right-6 bg-[#080810] border border-[rgba(220,38,38,0.3)] rounded-xl p-4"
+            style="box-shadow:0 8px 32px rgba(220,38,38,0.15);min-width:140px">
+            <p class="font-display text-3xl text-[#e63946]">{{ $about['semester'] }}</p>
             <p class="text-[11px] text-[#7a7070] mt-1">Semester</p>
-            <p class="text-[10px] text-[#5a5050] mt-0.5">Informatics Eng.</p>
+            <p class="text-[10px] text-[#5a5050] mt-0.5">{{ $about['major'] }}</p>
           </div>
 
           <!-- School badge -->
           <div class="absolute -top-4 -left-4 bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] backdrop-blur-md rounded-xl px-3 py-2">
-            <p class="text-[10px] text-[#e63946] tracking-[.1em] uppercase font-medium">PENS</p>
-            <p class="text-[9px] text-[#7a7070]">Surabaya</p>
+            <p class="text-[10px] text-[#e63946] uppercase font-medium" style="letter-spacing:0.1em">{{ $about['campus'] }}</p>
+            <p class="text-[9px] text-[#7a7070]">{{ $about['campus_location'] }}</p>
           </div>
         </div>
       </div>
@@ -407,7 +496,7 @@
       <div>
         <div class="reveal flex items-center gap-3 mb-4">
           <div class="w-8 h-px bg-[#e63946]"></div>
-          <span class="text-[11px] tracking-[.3em] uppercase text-[#e63946]">Who I Am</span>
+          <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">Who I Am</span>
         </div>
 
         <h2 class="reveal reveal-delay-1 font-display leading-none mb-6"
@@ -417,33 +506,25 @@
         </h2>
 
         <p class="reveal reveal-delay-2 text-[13px] text-[#9a9090] leading-relaxed mb-4">
-          I'm a third-semester Informatics Engineering student at
-          <span class="text-[#e8c8ca]">Politeknik Elektronika Negeri Surabaya</span>,
-          learning Algorithms, Data Structures, and Web Development.
+          {{ $about['intro'] }}
         </p>
 
         <p class="reveal reveal-delay-3 text-[13px] text-[#9a9090] leading-relaxed mb-8">
-          I build projects using React, Tailwind, and Laravel API — always chasing
-          clean architecture, readable code, and fast iteration.
+          {{ $about['body'] }}
         </p>
 
         <!-- Skills -->
         <div class="reveal reveal-delay-4 flex flex-wrap gap-2 mb-8">
-          <span class="tag">React</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Laravel</span>
-          <span class="tag">Golang</span>
-          <span class="tag">Tailwind</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">REST / JWT</span>
-          <span class="tag">Testing</span>
+          @foreach($skills as $skill)
+            <span class="tag">{{ $skill }}</span>
+          @endforeach
         </div>
 
         <div class="reveal reveal-delay-5">
-          <a href="/about"
-             class="inline-flex items-center gap-2 bg-[#e63946] hover:bg-[#ff4855] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-             style="box-shadow:0 0 24px rgba(220,38,38,0.35)">
-            Selengkapnya
+          <a href="{{ $about['cta_url'] }}"
+            class="inline-flex items-center gap-2 bg-[#e63946] hover:bg-[#ff4855] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            style="box-shadow:0 0 24px rgba(220,38,38,0.35)">
+            {{ $about['cta_label'] }}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -461,7 +542,7 @@
         <div>
           <div class="flex items-center gap-3 mb-2">
             <div class="w-8 h-px bg-[#e63946]"></div>
-            <span class="text-[11px] tracking-[.3em] uppercase text-[#e63946]">Portfolio</span>
+            <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">Portfolio</span>
           </div>
           <h2 class="font-display leading-none" style="font-size:clamp(3rem,7vw,5.5rem)">
             <span class="text-white/90">MY</span> <span class="grad-text">PROJECTS</span>
@@ -474,63 +555,35 @@
 
       <!-- Project cards grid -->
       <div class="grid md:grid-cols-2 gap-6">
-
-        <!-- Card 1 -->
-        <div class="reveal proj-card rounded-2xl overflow-hidden bg-[rgba(255,255,255,0.02)] backdrop-blur-sm relative group">
-          <div class="h-48 overflow-hidden">
-            <img src="https://picsum.photos/seed/proj1/600/300" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="project">
-            <div class="absolute inset-0 h-48" style="background:linear-gradient(to bottom,transparent 40%,rgba(8,8,16,0.9))"></div>
-          </div>
-          <div class="p-6">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="flex gap-2 mb-2">
-                  <span class="tag">React</span>
-                  <span class="tag">Laravel</span>
-                </div>
-                <h3 class="font-display text-xl text-white">Coursework Manager</h3>
-              </div>
-              <span class="text-[10px] text-[#7a7070] mt-1">2024</span>
+        @foreach($projects as $project)
+          <div class="reveal {{ $loop->index === 1 ? 'reveal-delay-2' : '' }} proj-card rounded-2xl overflow-hidden bg-[rgba(255,255,255,0.02)] backdrop-blur-sm relative group">
+            <div class="h-48 overflow-hidden">
+              <img src="https://picsum.photos/seed/proj{{ $loop->iteration }}/600/300" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="project">
+              <div class="absolute inset-0 h-48" style="background:linear-gradient(to bottom,transparent 40%,rgba(8,8,16,0.9))"></div>
             </div>
-            <p class="text-[12px] text-[#7a7070] leading-relaxed mb-5">
-              Full-featured coursework manager built using React + Laravel API with JWT authentication.
-            </p>
-            <a href="#"
-               class="inline-flex items-center gap-2 text-[12px] text-[#e8c8ca] border border-[rgba(220,38,38,0.3)] px-4 py-2 rounded-full hover:bg-[rgba(220,38,38,0.1)] hover:border-[rgba(220,38,38,0.6)] transition-all duration-200">
-              View Project
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="reveal reveal-delay-2 proj-card rounded-2xl overflow-hidden bg-[rgba(255,255,255,0.02)] backdrop-blur-sm relative group">
-          <div class="h-48 overflow-hidden">
-            <img src="https://picsum.photos/seed/proj2/600/300" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="project">
-            <div class="absolute inset-0 h-48" style="background:linear-gradient(to bottom,transparent 40%,rgba(8,8,16,0.9))"></div>
-          </div>
-          <div class="p-6">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="flex gap-2 mb-2">
-                  <span class="tag">Golang</span>
-                  <span class="tag">MySQL</span>
-                  <span class="tag">JWT</span>
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <div class="flex gap-2 mb-2">
+                    @foreach($project->stack ?? [] as $tag)
+                      <span class="tag">{{ $tag }}</span>
+                    @endforeach
+                  </div>
+                  <h3 class="font-display text-xl text-white">{{ $project->title }}</h3>
                 </div>
-                <h3 class="font-display text-xl text-white">REST API Service</h3>
+                <span class="text-[10px] text-[#7a7070] mt-1">{{ $project->year }}</span>
               </div>
-              <span class="text-[10px] text-[#7a7070] mt-1">2024</span>
+              <p class="text-[12px] text-[#7a7070] leading-relaxed mb-5">
+                {{ $project->description }}
+              </p>
+              <a href="{{ $project->link ?? '#' }}"
+                class="inline-flex items-center gap-2 text-[12px] text-[#e8c8ca] border border-[rgba(220,38,38,0.3)] px-4 py-2 rounded-full hover:bg-[rgba(220,38,38,0.1)] hover:border-[rgba(220,38,38,0.6)] transition-all duration-200">
+                View Project
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
             </div>
-            <p class="text-[12px] text-[#7a7070] leading-relaxed mb-5">
-              REST API with JWT Authentication using Golang — includes automated tests and clean architecture.
-            </p>
-            <a href="#"
-               class="inline-flex items-center gap-2 text-[12px] text-[#e8c8ca] border border-[rgba(220,38,38,0.3)] px-4 py-2 rounded-full hover:bg-[rgba(220,38,38,0.1)] hover:border-[rgba(220,38,38,0.6)] transition-all duration-200">
-              View Project
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
           </div>
-        </div>
+        @endforeach
       </div>
     </div>
   </section>
@@ -545,7 +598,7 @@
       <div>
         <div class="reveal flex items-center gap-3 mb-4">
           <div class="w-8 h-px bg-[#e63946]"></div>
-          <span class="text-[11px] tracking-[.3em] uppercase text-[#e63946]">Get in Touch</span>
+          <span class="text-[11px] uppercase text-[#e63946]" style="letter-spacing:0.3em">Get in Touch</span>
         </div>
 
         <h2 class="reveal reveal-delay-1 font-display leading-none mb-6"
@@ -559,23 +612,23 @@
         </p>
 
         <div class="reveal reveal-delay-3 flex flex-col gap-4">
-          <a href="mailto:email@email.com" class="flex items-center gap-3 group">
+          <a href="{{ $contacts['email']['href'] }}" class="flex items-center gap-3 group">
             <div class="w-9 h-9 rounded-full bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] flex items-center justify-center group-hover:bg-[rgba(220,38,38,0.2)] transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e63946" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </div>
-            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">email@email.com</span>
+            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">{{ $contacts['email']['label'] }}</span>
           </a>
-          <a href="https://github.com" target="_blank" class="flex items-center gap-3 group">
+          <a href="{{ $contacts['github']['href'] }}" target="_blank" class="flex items-center gap-3 group">
             <div class="w-9 h-9 rounded-full bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] flex items-center justify-center group-hover:bg-[rgba(220,38,38,0.2)] transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="#e63946"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             </div>
-            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">github.com/labiq</span>
+            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">{{ $contacts['github']['label'] }}</span>
           </a>
-          <a href="https://linkedin.com" target="_blank" class="flex items-center gap-3 group">
+          <a href="{{ $contacts['linkedin']['href'] }}" target="_blank" class="flex items-center gap-3 group">
             <div class="w-9 h-9 rounded-full bg-[rgba(220,38,38,0.1)] border border-[rgba(220,38,38,0.3)] flex items-center justify-center group-hover:bg-[rgba(220,38,38,0.2)] transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="#e63946"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </div>
-            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">linkedin.com/in/labiq</span>
+            <span class="text-[13px] text-[#9a9090] group-hover:text-[#e8c8ca] transition-colors">{{ $contacts['linkedin']['label'] }}</span>
           </a>
         </div>
       </div>
@@ -583,22 +636,22 @@
       <!-- Right — form -->
       <div class="reveal reveal-delay-2">
         <div class="relative rounded-2xl p-8 corner-tl corner-br"
-             style="background:rgba(255,255,255,0.02);border:1px solid rgba(220,38,38,0.2);backdrop-filter:blur(12px)">
+            style="background:rgba(255,255,255,0.02);border:1px solid rgba(220,38,38,0.2);backdrop-filter:blur(12px)">
           <form action="#" method="POST" class="flex flex-col gap-4">
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-[11px] tracking-[.1em] uppercase text-[#7a7070] mb-1.5 block">Name</label>
+                <label class="text-[11px] uppercase text-[#7a7070] mb-1.5 block" style="letter-spacing:0.1em">Name</label>
                 <input type="text" name="name" placeholder="Your name" class="form-input">
               </div>
               <div>
-                <label class="text-[11px] tracking-[.1em] uppercase text-[#7a7070] mb-1.5 block">Email</label>
+                <label class="text-[11px] uppercase text-[#7a7070] mb-1.5 block" style="letter-spacing:0.1em">Email</label>
                 <input type="email" name="email" placeholder="your@email.com" class="form-input">
               </div>
             </div>
 
             <div>
-              <label class="text-[11px] tracking-[.1em] uppercase text-[#7a7070] mb-1.5 block">Message</label>
+              <label class="text-[11px] uppercase text-[#7a7070] mb-1.5 block" style="letter-spacing:0.1em">Message</label>
               <textarea name="message" rows="4" placeholder="Hi Labiq, let's work together..." class="form-input resize-none"></textarea>
             </div>
 
@@ -654,6 +707,14 @@
   const secName = document.getElementById('sec-name');
   const secNames = ['Home','About','Projects','Contact'];
 
+  /* ── Top navbar active links ── */
+  const navLinks  = document.querySelectorAll('[data-nav]');
+  const sectionIds = ['home','about','project','contact'];
+
+  function setActiveNav(sectionId) {
+    navLinks.forEach(a => a.classList.toggle('active-nav', a.dataset.nav === sectionId));
+  }
+
   const secObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting && e.intersectionRatio > 0.5) {
@@ -661,10 +722,32 @@
         dots.forEach((d,i) => d.classList.toggle('active', i === idx));
         secNum.textContent  = String(idx+1).padStart(2,'0');
         secName.textContent = secNames[idx] || '';
+        setActiveNav(sectionIds[idx] || '');
       }
     });
   }, { threshold: 0.5 });
   sections.forEach(s => secObs.observe(s));
+
+  /* ── Navbar scroll shadow ── */
+  const navbar = document.getElementById('top-navbar');
+  const snapWrap = document.getElementById('snap');
+  snapWrap.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', snapWrap.scrollTop > 20);
+  });
+
+  /* ── Hamburger ── */
+  const toggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
 
   /* ── Nav dot smooth scroll ── */
   dots.forEach(dot => {
