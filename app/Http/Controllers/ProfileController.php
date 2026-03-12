@@ -15,6 +15,7 @@ class ProfileController extends Controller
             'headline'    => 'Front-end developer passionate about building beautiful and functional web apps using React, Laravel & modern technologies.',
             'resume_url'  => '#project',
             'about_url'   => '#about',
+            'avatar_url'  => '/img/fotolabiq.jpeg',
         ];
 
         $contacts = [
@@ -24,14 +25,15 @@ class ProfileController extends Controller
         ];
 
         $about = [
-            'intro'           => "I'm a third-semester Informatics Engineering student at Politeknik Elektronika Negeri Surabaya, learning Algorithms, Data Structures, and Web Development.",
+            'intro'           => "I'm a 4th-semester Informatics Engineering student at Politeknik Elektronika Negeri Surabaya, learning Algorithms, Data Structures, and Web Development.",
             'body'            => 'I build projects using React, Tailwind, and Laravel API — always chasing clean architecture, readable code, and fast iteration.',
-            'semester'        => '3rd',
+            'semester'        => '4th',
             'major'           => 'Informatics Eng.',
             'campus'          => 'PENS',
             'campus_location' => 'Surabaya',
             'cta_url'         => '/about',
             'cta_label'       => 'Selengkapnya',
+            'image_url'       => 'https://it.la.psdku.pens.ac.id/wp-content/uploads/slider/cache/726ec1c9803e52c9e5ef5a8034591a35/slide1-1.jpg',
         ];
 
         $projects = Project::query()->latest('year')->get();
@@ -39,18 +41,20 @@ class ProfileController extends Controller
         if ($projects->isEmpty()) {
             $projects = collect([
                 new Project([
-                    'title'       => 'Coursework Manager',
-                    'year'        => 2024,
-                    'stack'       => ['React', 'Laravel'],
-                    'description' => 'Full-featured coursework manager built using React + Laravel API with JWT authentication.',
+                    'title'       => 'Moodify: Mood Tracker',
+                    'year'        => 2025,
+                    'stack'       => ['React', 'Java Spring-boot'],
+                    'description' => 'Full-featured Moodify built using React + Spring API.',
+                    'image_url'   => '/img/moodify.png',
                     'link'        => '#',
                     'is_api'      => true,
                 ]),
                 new Project([
-                    'title'       => 'REST API Service',
-                    'year'        => 2024,
-                    'stack'       => ['Golang', 'MySQL', 'JWT'],
-                    'description' => 'REST API with JWT Authentication using Golang — includes automated tests and clean architecture.',
+                    'title'       => 'Smarthome',
+                    'year'        => 2025,
+                    'stack'       => ['React', 'MongoDB', 'node.js'],
+                    'description' => 'REST API with node.js — using hivemq broker to connect from hardware IoT to backend.',
+                    'image_url'   => '/img/smarthome.png',
                     'link'        => '#',
                     'is_api'      => true,
                 ]),

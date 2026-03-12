@@ -14,6 +14,7 @@ class Project extends Model
         'year',
         'stack',
         'description',
+        'image_url',
         'link',
         'is_api',
     ];

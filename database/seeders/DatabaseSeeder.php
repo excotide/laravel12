@@ -24,19 +24,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Project::factory()->create([
-            'title'       => 'Coursework Manager',
-            'year'        => 2024,
-            'stack'       => ['React', 'Laravel'],
-            'description' => 'Full-featured coursework manager built using React + Laravel API with JWT authentication.',
+            'title'       => 'Moodify: Mood Tracker',
+            'year'        => 2025,
+            'stack'       => ['React', 'Java Spring-boot'],
+            'description' => 'Full-featured Moodify built using React + Spring API.',
+            'image_url'   => '/img/moodify.png',
             'link'        => '#',
             'is_api'      => true,
         ]);
 
         Project::factory()->create([
-            'title'       => 'REST API Service',
-            'year'        => 2024,
-            'stack'       => ['Golang', 'MySQL', 'JWT'],
-            'description' => 'REST API with JWT Authentication using Golang — includes automated tests and clean architecture.',
+            'title'       => 'Smarthome',
+            'year'        => 2025,
+            'stack'       => ['React', 'MongoDB', 'node.js'],
+            'description' => 'REST API with node.js — using hivemq broker to connect from hardware IoT to backend.',
+            'image_url'   => '/img/smarthome.png',
             'link'        => '#',
             'is_api'      => true,
         ]);

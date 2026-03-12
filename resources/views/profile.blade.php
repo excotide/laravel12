@@ -429,7 +429,7 @@
           <!-- Card -->
           <div class="relative w-64 h-80 rounded-2xl overflow-hidden corner-tl corner-br"
               style="border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(220,38,38,0.2)">
-            <img src="https://picsum.photos/seed/labiq/400/500" class="w-full h-full object-cover" alt="profile">
+            <img src="{{ $profile['avatar_url'] }}" class="w-full h-full object-cover" alt="profile">
             <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(8,8,16,0.9) 0%,transparent 50%)"></div>
             <div class="absolute bottom-4 left-4">
               <p class="font-display text-xl text-white leading-none">LABIQ</p>
@@ -472,7 +472,7 @@
       <div class="reveal flex justify-center">
         <div class="relative">
           <div class="w-72 h-72 rounded-2xl overflow-hidden" style="border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(220,38,38,0.15)">
-            <img src="https://picsum.photos/seed/about/400/400" class="w-full h-full object-cover" alt="about">
+            <img src="{{ $about['image_url'] }}" class="w-full h-full object-cover" alt="about">
             <div class="absolute inset-0" style="background:linear-gradient(135deg,rgba(220,38,38,0.2),transparent 60%)"></div>
           </div>
 
@@ -558,7 +558,7 @@
         @foreach($projects as $project)
           <div class="reveal {{ $loop->index === 1 ? 'reveal-delay-2' : '' }} proj-card rounded-2xl overflow-hidden bg-[rgba(255,255,255,0.02)] backdrop-blur-sm relative group">
             <div class="h-48 overflow-hidden">
-              <img src="https://picsum.photos/seed/proj{{ $loop->iteration }}/600/300" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="project">
+              <img src="{{ $project->image_url ?? 'https://picsum.photos/seed/proj' . $loop->iteration . '/600/300' }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="project">
               <div class="absolute inset-0 h-48" style="background:linear-gradient(to bottom,transparent 40%,rgba(8,8,16,0.9))"></div>
             </div>
             <div class="p-6">
